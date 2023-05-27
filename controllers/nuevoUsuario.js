@@ -9,6 +9,22 @@ const client = new Pool({
 
 const bcrypt = require("bcrypt");
 
+exports.verificarEmail = async (req, res) => {
+    const { email } = req.body;
+    try {
+        const { rows } = await client.query(
+            "SELECT email FROM users WHERE email = $1",
+            [email]
+        );
+        // Si el email existe, devuelve true
+        if (rows[0].email !== null) {
+            res.send(true);
+        }
+    } catch (error) {
+        res.send(error)
+    }
+}
+
 exports.nuevoUsuario = async (req, res) => {
     const { contraseña } = req.body;
     const salt = await bcrypt.genSalt(10);
