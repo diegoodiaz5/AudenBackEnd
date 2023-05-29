@@ -41,9 +41,8 @@ exports.verificarNombreUsuario = async (req, res) => {
 }
 
 exports.nuevoUsuario = async (req, res) => {
-    const { contraseña } = req.body;
     const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash(contraseña, salt);
+    const password = await bcrypt.hash(req.body.contraseña, salt);
 
     const newUser = {
         email: req.body.email,
