@@ -25,6 +25,21 @@ exports.verificarEmail = async (req, res) => {
     }
 }
 
+exports.verificarNombreUsuario = async (req, res) => {
+    const { nombre_de_usuario } = req.body;
+    try {
+        const { rows } = await client.query(
+            "SELECT nombre_de_usuario FROM users WHERE nombre_de_usuario = $1",
+            [nombre_de_usuario]
+        );
+        if (rows[0].nombre_de_usuario !== null) {
+            res.send(true);
+        }
+    } catch (error) {
+        res.send(error)
+    }
+}
+
 exports.nuevoUsuario = async (req, res) => {
     const { contraseña } = req.body;
     const salt = await bcrypt.genSalt(10);
@@ -41,7 +56,7 @@ exports.nuevoUsuario = async (req, res) => {
             "INSERT INTO users (email, nombre_de_usuario, contraseña) VALUES ($1, $2, $3)",
             [newUser.email, newUser.nombre_de_usuario, newUser.contraseña]
         );
-        res.send(newUser);
+        res.sendStatus(200);
     }
     catch (error) {
         res.send(error)
