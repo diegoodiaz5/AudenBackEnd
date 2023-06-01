@@ -40,6 +40,25 @@ exports.verificarNombreUsuario = async (req, res) => {
     }
 }
 
+
+// verifica nombre de usuario y email al mismo tiempo
+exports.verificarUsuario = async (req, res) => {
+    const { info } = req.body;
+    try {
+        const { rows } = await client.query(
+            "SELECT * FROM users WHERE email = $1 OR nombre_de_usuario = $1",
+            [info]
+        );
+        if (rows[0] !== undefined) {
+            res.send({ existe: true, email: rows[0].email })
+        } else {
+            res.send({ existe: false })
+        }
+    } catch (error) {
+        res.send(error);
+    }
+}
+
 exports.nuevoUsuario = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const password = await bcrypt.hash(req.body.contraseña, salt);
