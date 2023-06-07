@@ -33,7 +33,7 @@ exports.iniciarSesion = async (req, res) => {
                     },
                     TOKEN_SECRET
                 );
-                res.json({ error: null, data: "Login exitoso", token });
+                res.json({ error: null, user: rows[0], token });
             }
         } else {
             return res.send({ error: "Usuario no encontrado" });
