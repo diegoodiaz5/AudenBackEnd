@@ -74,6 +74,9 @@ exports.nuevoUsuario = async (req, res) => {
             "INSERT INTO users (email, nombre_de_usuario, contraseña) VALUES ($1, $2, $3)",
             [newUser.email, newUser.nombre_de_usuario, newUser.contraseña]
         );
+        await client.query(
+            "INSERT INTO modals (modal1) VALUES (true)",
+        )
         res.sendStatus(200);
     }
     catch (error) {
