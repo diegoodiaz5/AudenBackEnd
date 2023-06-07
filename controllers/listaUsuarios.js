@@ -14,5 +14,15 @@ exports.usuarios = async (req, res) => {
     } catch (error) {
         res.send(error);
     }
-
 };
+
+exports.usuarioPorId = async (req, res) => {
+    const { user_id } = req.body;
+    try {
+        const { rows } = await client.query("SELECT u.user_id, u.email, u.nombre_de_usuario, m.modal1 FROM users u INNER JOIN modals m USING(user_id) WHERE user_id = $1",
+            [user_id]);
+        res.send(rows)
+    } catch (error) {
+
+    }
+}
